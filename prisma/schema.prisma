@@ -1,0 +1,133 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Payment {
+  id            String             @id @default(uuid())
+  amount        Decimal            @db.Decimal(10, 2)
+  paymentMethod PaymentMethodsEnum @map("payment_method")
+  status        StatusEnum
+  transactionId String             @map("transaction_id")
+  createdAt     DateTime           @default(now()) @map("created_at")
+
+  order   Order  @relation(fields: [orderId], references: [id])
+  orderId String @map("order_id")
+
+  @@map("payments")
+}
+
+model Order {
+  id            String             @id @default(uuid())
+  userId        String             @map("user_id")
+  status        StatusEnum
+  totalPrice    Decimal            @map("total_price") @db.Decimal(10, 2)
+  paymentMethod PaymentMethodsEnum @map("payment_method")
+  orderNumber   Int                @map("order_number")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @default(now()) @updatedAt @map("updated_at")
+
+  payments   Payment[]
+  orderItems OrderItem[]
+  user       User        @relation(fields: [userId], references: [id])
+  Queue      Queue[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String  @map("order_id")
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+  total     Decimal @db.Decimal(10, 2)
+  productId String  @map("product_id")
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model Product {
+  id          String       @id @default(uuid())
+  name        String
+  description String
+  price       Decimal      @db.Decimal(10, 2)
+  category    CategoryEnum
+  image       String
+  available   Boolean
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
+  orderItems  OrderItem[]
+
+  @@map("products")
+}
+
+model Queue {
+  id          String     @id @default(uuid())
+  orderId     String     @map("order_id")
+  orderNumber Int
+  status      StatusEnum
+  position    Int
+
+  order Order @relation(fields: [orderId], references: [id])
+
+  @@map("queue")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     RoleEnum
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@map("users")
+}
+
+enum RoleEnum {
+  ADMIN
+  EMPLOYEE
+  USER
+}
+
+enum CategoryEnum {
+  DESSERT
+  DRINKS
+  BURGER
+  FRIES
+  COMBO
+}
+
+enum PaymentMethodsEnum {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  PIX
+  BOLETO
+}
+
+enum StatusEnum {
+  PENDING
+  APPROVED
+  DECLINED
+  CANCELED
+  SHIPPED
+  DELIVERED
+}
