@@ -14,6 +14,7 @@ A **Order Token API** é uma API desenvolvida em **NestJS** com **TypeScript**, 
   - [Funcionalidades](#funcionalidades)
   - [Instalação](#instalação)
   - [Uso](#uso)
+  - [Imagens](#imagens)
   - [Contato](#contato)
 
 ## Sobre
@@ -84,6 +85,13 @@ Para rodar a **Order Token API** em sua máquina, siga os passos abaixo:
 - **Delete um pedido** usando a rota DELETE `/orders/:id`
 - **Gerencie produtos** usando as rotas `/products`
 - **Gerencie pagamentos** usando a integração com Mercado Pago
+
+
+## Imagens
+
+![Imagem da arquitetura](https://raw.githubusercontent.com/PedrOliveiraM/order-token-api/main/assets/Architecture%20-%20Token-API.png)
+![Imagem dos relaciolamentos do banco de dados](https://raw.githubusercontent.com/PedrOliveiraM/order-token-api/main/assets/diagram-order-system.svg)
+
 
 ## Contato
 
