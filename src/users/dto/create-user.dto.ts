@@ -1,23 +1,13 @@
-// src/users/dto/create-user.dto.ts
-import { Prisma, RoleEnum } from '@prisma/client';
-import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { RoleEnum } from '@prisma/client';
+import { z } from 'zod';
 
-// Aqui pegamos o tipo "User" gerado pelo Prisma, mas omitimos campos automáticos
-export class CreateUserDto implements Omit<Prisma.UserCreateInput, 'id' | 'createdAt' | 'updatedAt' | 'orders'> {
+// Criamos um schema Zod para o usuário
+export const createUserSchema = z.object({
+  name: z.string().min(1, 'Nome é obrigatório'),
+  email: z.string().email('E-mail inválido'),
+  password: z.string().min(6, 'A senha deve ter pelo menos 6 caracteres'),
+  role: z.nativeEnum(RoleEnum),
+});
 
-  @IsNotEmpty()
-  @IsString()
-  name: string;
-
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  @IsString()
-  password: string;
-
-  @IsNotEmpty()
-  @IsEnum(RoleEnum)
-  role: RoleEnum;
-}
+// Inferimos o tipo automaticamente a partir do schema
+export type CreateUserDto = z.infer<typeof createUserSchema>;

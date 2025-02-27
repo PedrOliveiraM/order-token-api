@@ -9,31 +9,33 @@ export class UsersService {
   constructor(private prisma: PrismaService) { }
 
 
-  async create(createUserDto: CreateUserDto) {
-
-    const hashPassword = await crypto.createHash('sha256')
-
-
-    return this.prisma.user.create({
-      data: {
-        name: createUserDto.name,
-        email: createUserDto.email,
-        password: createUserDto.password,
-        role: createUserDto.role
-      }
-    })
+  create(createUserDto: CreateUserDto) {
+    return createUserDto
   }
 
   findAll() {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id }
+    })
+
+    if (!user) return null
+
+    return {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      password: user.password,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+    return `This action updates a #${id} user${JSON.stringify(updateUserDto)}`;
   }
 
   remove(id: number) {
