@@ -10,6 +10,7 @@ const envSchema = z.object({
     .url()
     .default('postgres://docker:docker@localhost:5432/postgres'),
   CALLBACKURL: z.string().default('http://localhost:3000/api/auth/google/callback'),
+  JWT_SECRET: z.string().default('secret'),
 })
 
 export const env = envSchema.parse(process.env)
