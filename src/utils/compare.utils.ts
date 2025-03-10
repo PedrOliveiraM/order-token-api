@@ -1,5 +1,7 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
+
+console.log(bcrypt); // Adiciona isso temporariamente
 
 export async function comparePassword(plainText: string, hashed: string): Promise<boolean> {
-  return bcrypt.compare(plainText, hashed);
+  return await bcrypt.compare(plainText, hashed);
 }
