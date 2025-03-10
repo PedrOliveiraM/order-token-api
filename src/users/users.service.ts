@@ -1,20 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto } from './dto/create-user-dto';
+import { UpdateUserDto } from './dto/update-user-dto';
+import { UserDto } from './dto/user-dto';
 
 @Injectable()
 export class UsersService {
 
   constructor(private prisma: PrismaService) { }
 
+  async create(createUserDto: CreateUserDto): Promise<UserDto | null> {
+    try {
+      const newUser = await this.prisma.user.create({
+        data: {
+          name: createUserDto.name,
+          email: createUserDto.email,
+          password: createUserDto.password,
+          role: createUserDto.role,
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          createdAt: true,
+          updatedAt: true,
+          orders: true,
+          role: true,
+          _count: true,
+          password: false
+        }
+      });
 
-  create(createUserDto: CreateUserDto) {
-    return createUserDto
+      if (!newUser) return null;
+
+      return newUser;
+
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new ConflictException('Email já está em uso');
+      }
+      throw new InternalServerErrorException('Erro ao criar usuário');
+    }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    const users = await this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+        orders: true,
+        role: true,
+        _count: true,
+        password: false
+      }
+    })
+
+    return { users }
+  }
+
+  async findUserByEmail(email: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { email }
+    })
+
+    if (!user) return null
+
+    return user;
   }
 
   async findOne(id: string) {
@@ -28,7 +82,6 @@ export class UsersService {
       id: user.id,
       email: user.email,
       name: user.name,
-      password: user.password,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt
     }
