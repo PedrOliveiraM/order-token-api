@@ -1,4 +1,5 @@
-import { RoleEnum } from "src/constants/enum.constants";
+import { RoleEnum } from "@prisma/client";
+import { Role } from "src/enums/role.enum";
 import { z } from "zod";
 
 export interface UserDto {
@@ -6,7 +7,7 @@ export interface UserDto {
   name: string;
   email: string;
   password: string;
-  role: typeof RoleEnum;
+  role: Role;
   createdAt: Date;
   updatedAt: Date;
 }
