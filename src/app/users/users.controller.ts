@@ -1,8 +1,9 @@
 import { BadRequestException, Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Roles } from 'src/auth/decorators/roles.decorator';
-import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { Roles } from 'src/app/auth/decorators/roles.decorator';
+import { AuthGuard } from 'src/app/auth/guards/auth.guard';
 import { Role } from 'src/enums/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UserDto } from './dto/user-dto';
@@ -15,7 +16,7 @@ export class UsersController {
 
   @Post()
   @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @ApiResponse({ status: 201, description: 'Usuário criado com sucesso.', type: UserDto })
   @ApiResponse({ status: 409, description: 'Email já está em uso.' })
   @ApiResponse({ status: 500, description: 'Erro ao criar usuário.' })
@@ -28,8 +29,9 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @UseGuards(AuthGuard)
   @Get()
+  @Roles(Role.USER, Role.ADMIN)
+  @UseGuards(AuthGuard, RolesGuard)
   findAll() {
     return this.usersService.findAll();
   }

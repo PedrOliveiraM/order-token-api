@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { comparePassword } from 'src/utils/compare.utils';
 import { UsersService } from '../users/users.service';
@@ -18,13 +18,14 @@ export class AuthService {
     try {
       const user = await this.usersService.findUserByEmail(email);
 
-      if (!user) throw new UnauthorizedException();
+      if (!user) throw new BadRequestException();
 
       const isPasswordMatching = await comparePassword(password, user.password);
 
-      if (!isPasswordMatching) throw new UnauthorizedException();
+      if (!isPasswordMatching) throw new UnauthorizedException("Invalid credentials");
 
-      const payload = { sub: user.id, username: user.name };
+      const payload = { sub: user.id, username: user.name, roles: user.role };
+      console.log("payload: ", payload);
       const accessToken = await this.jwtService.signAsync(payload, { expiresIn: '15m' });
 
       return { token: accessToken };

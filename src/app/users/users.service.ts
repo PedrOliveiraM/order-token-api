@@ -1,5 +1,6 @@
 import { ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { hashPassword } from 'src/utils/crypto.util';
 import { CreateUserDto } from './dto/create-user-dto';
 import { UpdateUserDto } from './dto/update-user-dto';
 import { UserDto } from './dto/user-dto';
@@ -11,11 +12,13 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<UserDto | null> {
     try {
+
+      const passwordSecurity = await hashPassword(createUserDto.password);
       const newUser = await this.prisma.user.create({
         data: {
           name: createUserDto.name,
           email: createUserDto.email,
-          password: createUserDto.password,
+          password: passwordSecurity,
           role: createUserDto.role,
         },
         select: {
