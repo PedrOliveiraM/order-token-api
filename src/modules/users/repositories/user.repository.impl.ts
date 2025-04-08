@@ -24,12 +24,13 @@ export class UserRepositoryImpl implements IUserRepository {
           name: user.name,
           email: user.email.toLowerCase(),
           password: hashedPassword,
-          role: user.role,
+          roles: user.role,
         },
         select: userSelect,
       });
 
       return newUser;
+      
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&

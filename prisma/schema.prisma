@@ -21,7 +21,7 @@ model Payments {
   transactionId String             @map("transaction_id")
   createdAt     DateTime           @default(now()) @map("created_at")
 
-  order   Orders  @relation(fields: [orderId], references: [id])
+  order   Orders @relation(fields: [orderId], references: [id])
   orderId String @map("order_id")
 
   @@map("payments")
@@ -87,11 +87,11 @@ model Queues {
 }
 
 model Users {
-  id       String   @id @default(uuid())
+  id       String     @id @default(uuid())
   name     String
-  email    String   @unique
+  email    String     @unique
   password String
-  role     RoleEnum
+  roles     RoleEnum[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
