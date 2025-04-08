@@ -1,100 +1,99 @@
-# ORDER TOKEN API ![Em Andamento](https://img.shields.io/badge/status-em%20andamento-yellow)
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-A **Order Token API** é uma API desenvolvida em **NestJS** com **TypeScript**, **Prisma** e **PostgreSQL**, containerizada com **Docker** e testada usando **Jest**. Essa API tem como objetivo gerenciar os pedidos de um estabelecimento de alimentação, similar a um **Burger King**, incluindo integração com o **Mercado Pago** para pagamentos.
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## Tecnologias
-![Tecnologias](https://skillicons.dev/icons?i=nestjs,typescript,prisma,postgres,docker,jest)
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Índice
+## Description
 
-- [ORDER TOKEN API ](#order-token-api-)
-  - [Tecnologias](#tecnologias)
-  - [Índice](#índice)
-  - [Sobre](#sobre)
-  - [Funcionalidades](#funcionalidades)
-  - [Instalação](#instalação)
-  - [Uso](#uso)
-  - [Imagens](#imagens)
-  - [Contato](#contato)
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Sobre
+## Project setup
 
-A **Order Token API** foi criada para facilitar o gerenciamento de pedidos em um estabelecimento de alimentação, permitindo criar, atualizar, consultar e deletar pedidos, bem como gerenciar pagamentos e integrações financeiras através do **Mercado Pago**.
+```bash
+$ npm install
+```
 
-## Funcionalidades
+## Compile and run the project
 
-- **Gestão de Pedidos**
-  - Criação de pedidos
-  - Atualização de pedidos
-  - Consulta de pedidos por status
-  - Deleção de pedidos
+```bash
+# development
+$ npm run start
 
-- **Integração de Pagamento**
-  - Integração com Mercado Pago para processar pagamentos
-  - Registro de status de pagamento (pendente, aprovado, recusado, cancelado)
+# watch mode
+$ npm run start:dev
 
-- **Gestão de Usuários**
-  - Criação e autenticação de usuários
-  - Definição de permissões (admin, funcionário, cliente)
+# production mode
+$ npm run start:prod
+```
 
-- **Gerenciamento de Produtos**
-  - Cadastro de produtos (hambúrgueres, bebidas, sobremesas, combos)
-  - Atualização e remoção de produtos
-  - Consulta de produtos por categoria
+## Run tests
 
-## Instalação
+```bash
+# unit tests
+$ npm run test
 
-Para rodar a **Order Token API** em sua máquina, siga os passos abaixo:
+# e2e tests
+$ npm run test:e2e
 
-- **Clone o repositório**
-  ```bash
-  git clone https://github.com/SeuRepositorio/order-token-api.git
-  ```
-- **Instale as dependências**
-  ```bash
-  npm install
-  ```
-  ou
-  ```bash
-  pnpm install
-  ```
-- **Configure as variáveis de ambiente**
-  Crie um arquivo `.env` na raiz do projeto e configure:
-  ```env
-  DATABASE_URL=postgresql://usuario:senha@localhost:5432/order-token-db
-  MERCADO_PAGO_ACCESS_TOKEN=sua-chave-de-acesso
-  ```
-- **Suba os containers Docker**
-  ```bash
-  docker-compose up -d
-  ```
-- **Execute as migrações Prisma**
-  ```bash
-  npx prisma migrate deploy
-  ```
-- **Execute o projeto**
-  ```bash
-  npm run start:dev
-  ```
+# test coverage
+$ npm run test:cov
+```
 
-## Uso
+## Deployment
 
-- **Crie um pedido** usando a rota POST `/orders`
-- **Consulte os pedidos** usando a rota GET `/orders`
-- **Atualize um pedido** usando a rota PATCH `/orders/:id`
-- **Delete um pedido** usando a rota DELETE `/orders/:id`
-- **Gerencie produtos** usando as rotas `/products`
-- **Gerencie pagamentos** usando a integração com Mercado Pago
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-## Imagens
+```bash
+$ npm install -g mau
+$ mau deploy
+```
 
-![Imagem da arquitetura](https://raw.githubusercontent.com/PedrOliveiraM/order-token-api/main/assets/Architecture%20-%20Token-API.png)
-![Imagem dos relaciolamentos do banco de dados](https://raw.githubusercontent.com/PedrOliveiraM/order-token-api/main/assets/diagram-order-system.svg)
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
+## Resources
 
-## Contato
+Check out a few resources that may come in handy when working with NestJS:
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?&style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/pedro-oliveira-m/)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:pedro.oliveira@monteirodev.com)
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

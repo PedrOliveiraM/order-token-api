@@ -13,7 +13,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Payment {
+model Payments {
   id            String             @id @default(uuid())
   amount        Decimal            @db.Decimal(10, 2)
   paymentMethod PaymentMethodsEnum @map("payment_method")
@@ -21,13 +21,13 @@ model Payment {
   transactionId String             @map("transaction_id")
   createdAt     DateTime           @default(now()) @map("created_at")
 
-  order   Order  @relation(fields: [orderId], references: [id])
+  order   Orders  @relation(fields: [orderId], references: [id])
   orderId String @map("order_id")
 
   @@map("payments")
 }
 
-model Order {
+model Orders {
   id            String             @id @default(uuid())
   userId        String             @map("user_id")
   status        StatusEnum
@@ -37,15 +37,15 @@ model Order {
   createdAt     DateTime           @default(now()) @map("created_at")
   updatedAt     DateTime           @default(now()) @updatedAt @map("updated_at")
 
-  payments   Payment[]
-  orderItems OrderItem[]
-  user       User        @relation(fields: [userId], references: [id])
-  Queue      Queue[]
+  payments   Payments[]
+  orderItems OrderItems[]
+  user       Users        @relation(fields: [userId], references: [id])
+  Queue      Queues[]
 
   @@map("orders")
 }
 
-model OrderItem {
+model OrderItems {
   id        String  @id @default(uuid())
   orderId   String  @map("order_id")
   quantity  Int
@@ -53,13 +53,13 @@ model OrderItem {
   total     Decimal @db.Decimal(10, 2)
   productId String  @map("product_id")
 
-  order   Order   @relation(fields: [orderId], references: [id])
-  product Product @relation(fields: [productId], references: [id])
+  order   Orders   @relation(fields: [orderId], references: [id])
+  product Products @relation(fields: [productId], references: [id])
 
   @@map("order_items")
 }
 
-model Product {
+model Products {
   id          String       @id @default(uuid())
   name        String
   description String
@@ -69,24 +69,24 @@ model Product {
   available   Boolean
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime     @default(now()) @updatedAt @map("updated_at")
-  orderItems  OrderItem[]
+  orderItems  OrderItems[]
 
   @@map("products")
 }
 
-model Queue {
+model Queues {
   id          String     @id @default(uuid())
   orderId     String     @map("order_id")
   orderNumber Int
   status      StatusEnum
   position    Int
 
-  order Order @relation(fields: [orderId], references: [id])
+  order Orders @relation(fields: [orderId], references: [id])
 
-  @@map("queue")
+  @@map("queues")
 }
 
-model User {
+model Users {
   id       String   @id @default(uuid())
   name     String
   email    String   @unique
@@ -96,7 +96,7 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  orders Order[]
+  orders Orders[]
 
   @@map("users")
 }
@@ -105,6 +105,7 @@ enum RoleEnum {
   ADMIN
   EMPLOYEE
   USER
+  GUEST
 }
 
 enum CategoryEnum {
