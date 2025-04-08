@@ -13,11 +13,11 @@ export class UserRepositoryImpl implements IUserRepository {
   constructor(
     private readonly prisma: PrismaService,
     private readonly encrypter: IEncrypter,
-  ) {}
+  ) { }
 
   async create(user: CreateUserDto): Promise<UserResponseDto> {
     const hashedPassword = await this.encrypter.hash(user.password);
-  
+
     try {
       const newUser = await this.prisma.users.create({
         data: {
@@ -28,7 +28,7 @@ export class UserRepositoryImpl implements IUserRepository {
         },
         select: userSelect,
       });
-  
+
       return newUser;
     } catch (error) {
       if (
@@ -37,22 +37,22 @@ export class UserRepositoryImpl implements IUserRepository {
       ) {
         throw new ConflictException(`Email "${user.email}" já está em uso`);
       }
-  
-      throw error; 
+
+      throw error;
     }
   }
 
   async findAll(): Promise<UserResponseDto[]> {
     return await this.prisma.users.findMany({
       select: userSelect,
-      orderBy: { createdAt: 'asc' }, 
+      orderBy: { createdAt: 'asc' },
     });
   }
-  
+
   async findByEmail(email: string): Promise<UserResponseDto | null> {
     return await this.prisma.users.findUnique({
       where: { email },
-      select: userSelect,
+      select: { ...userSelect, password: true },
     });
   }
 
@@ -61,11 +61,11 @@ export class UserRepositoryImpl implements IUserRepository {
       where: { id },
       select: userSelect,
     });
-  
+
     if (!user) {
       throw new NotFoundException(`User with id "${id}" not found`);
     }
-  
+
     return user;
   }
 
@@ -96,5 +96,5 @@ export class UserRepositoryImpl implements IUserRepository {
       throw error;
     }
   }
-  
+
 }

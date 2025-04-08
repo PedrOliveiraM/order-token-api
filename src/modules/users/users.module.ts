@@ -8,14 +8,15 @@ import { UsersService } from './users.service';
 
 @Module({
   controllers: [UsersController],
-  providers: [UsersService, 
-  {
-    provide: IUserRepository,
-    useClass: UserRepositoryImpl,
-  },
-  {
-    provide: IEncrypter,
-    useClass: BcryptEncrypter,
-  }],
+  providers: [UsersService,
+    {
+      provide: IUserRepository,
+      useClass: UserRepositoryImpl,
+    },
+    {
+      provide: IEncrypter,
+      useClass: BcryptEncrypter,
+    }],
+  exports: [UsersService, IEncrypter]
 })
-export class UsersModule {}
+export class UsersModule { }
