@@ -9,6 +9,6 @@ export abstract class IUserRepository {
   abstract findByEmail(email: string): Promise<UserResponseDto | null>;
 
   abstract update(id: string, user: Partial<UserResponseDto>): Promise<UserResponseDto | null>;
-  abstract delete(id: string): Promise<void>;
+  abstract delete(id: string): Promise<UserResponseDto>;
 
 }

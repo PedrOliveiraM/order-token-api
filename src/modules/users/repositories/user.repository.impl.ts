@@ -24,13 +24,13 @@ export class UserRepositoryImpl implements IUserRepository {
           name: user.name,
           email: user.email.toLowerCase(),
           password: hashedPassword,
-          roles: user.role,
+          roles: user.roles,
         },
         select: userSelect,
       });
 
       return newUser;
-      
+
     } catch (error) {
       if (
         error instanceof PrismaClientKnownRequestError &&
@@ -85,11 +85,21 @@ export class UserRepositoryImpl implements IUserRepository {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<UserResponseDto> {
     try {
-      await this.prisma.users.delete({
+      const deletedUser = await this.prisma.users.delete({
         where: { id },
       });
+
+      return {
+        id: deletedUser.id,
+        name: deletedUser.name,
+        email: deletedUser.email,
+        roles: deletedUser.roles,
+        createdAt: deletedUser.createdAt,
+        updatedAt: deletedUser.updatedAt,
+      }
+
     } catch (error: any) {
       if (error?.code === 'P2025') {
         throw new NotFoundException(`User with id "${id}" not found`);

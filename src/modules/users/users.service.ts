@@ -17,19 +17,19 @@ export class UsersService {
     return this.userRepository.findAll();
   }
 
-  findOne(id: string) {
+  findById(id: string) {
     return this.userRepository.findById(id);
   }
 
-  async findByEmail(email: string) {
-    return await this.userRepository.findByEmail(email);
+  findByEmail(email: string) {
+    return this.userRepository.findByEmail(email);
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
     return this.userRepository.update(id, updateUserDto);
   }
 
-  remove(id: string) {
-    return this.remove(id);
+  delete(id: string) {
+    return this.userRepository.delete(id);
   }
 }
