@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { zodToOpenAPI } from 'nestjs-zod';
 import { AuthService } from './auth.service';
+import { SignInResponseDto } from './dto/signIn-response.dto';
 import { SignInDto, SignInSchema } from './dto/signIn.dto';
 
 const SignInDtoSwagger = zodToOpenAPI(SignInSchema);
@@ -18,7 +19,7 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Return access token' })
   @ApiResponse({ status: 401, description: 'Unauthorized, invalid password' })
   @ApiResponse({ status: 404, description: 'User not found' })
-  async signIn(@Body() signIn: SignInDto): Promise<any> {
+  async signIn(@Body() signIn: SignInDto): Promise<SignInResponseDto> {
     const token = await this.authService.signIn(signIn);
     return token
   }
